@@ -1,0 +1,1 @@
+{"tbas_name": "test", "deployment_name": "testdeployment", "scale_down_replica": 5, "scale_down_time": "23:10", "scale_up_replica": 100, "scale_up_time": "17:44", "target_nodes": "", "wave_of_scale": 5, "status": {"current_replica": 100, "set_replica": 100, "type": "ScaleUp", "status": "complete", "last_transition_time": "2020-11-12T00:00:00Z", "message": "gfhf"}}
