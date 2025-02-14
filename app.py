@@ -24,8 +24,8 @@ while True :
             continue
         #=> if new running exist ----> call `hand` function to change status of tbas
         if val != [] :
-            print(f"{val[0]}-------{val[1]}")
-            hand.set_status_and_type(val[0], val[1], "running")
+            print(f"{val[0]}-------{val[2]}")
+            hand.set_status_and_type(None,val[2],"running","Status section fill by set_status_brain",val[0], val[1])
         #=> if doesn't exit -----> continue 
         else:
             print("before continue")
@@ -41,30 +41,26 @@ while True :
             continue
         print("============", order)
         order = order.split("---")
-        if order[1] == "ScaleUp":
+        if (order[0] == "ScaleUp") or (order[0] == "ScaleDown"):
             # scale up ----> tbase: order[0] , count: order[2]
-            hand.set_replica(order[0], order[2])
+            hand.set_replica(order[1],order[2], order[3])
             pass
-        elif order[1] == "ScaleDown":
-            # scale down ----> tbase: order[0] , count: order[2]
-            hand.set_replica(order[0], f"-{order[2]}")
-            pass
-        elif order[1] == "setting":
+        elif order[0] == "setting":
             # status of tbase need to be change . tbase: order[0] , status: order[2]
-            hand.set_status(order[0], order[2])
+            hand.set_status(order[1], order[2], order[3])
             pass
-        elif order[1] == "pending state":
+        elif order[0] == "pending_state":
             # It's the pending state . tbase: order[0]
-            print(order[0], "pending ...")
+            print(order[1], "pending ...")
             pass
-        elif order[1] == "warning":
-            if order[2] == "different replicas":
+        elif order[0] == "warning":
+            if order[3] == "different_eplicas" and order[4] == "":
                 # main need to check replicas an fix it by hand. tbase: [0], current_rep: [3], set_rep: [4]
-                print("warning-different replica")
+                print("warning-different_replica")
                 pass
-            elif order[2] == "different type" :
+            elif order[3] == "different type" :
                 # status need to be change to debug . tbase: [0], status: [3]
-                hand.set_status(order[0], order[3])
+                hand.set_status(order[1], order[2], order[4])
                 pass
     #=> 1 ) ScaleUp - count
     #=> 2 ) ScaleDown - count
