@@ -1,71 +1,122 @@
-# import requests
+import requests
 import json
-# import datetime
+import datetime
+import centralize_config
 
-# # Define the API server URL and token for authentication
-# api_server = "https://172.16.1.71:6443"
-# namespace = "default"
-# headers = {
-#     "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImJPWkdJdUtBLThOcWpEM194bEFJeDRQY1ZfZHBCdzNuTEIybkJMTkRIREUifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiLCJrM3MiXSwiZXhwIjoxNzU4OTc5MzE0LCJpYXQiOjE3Mjc0NDMzMTQsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwianRpIjoiZGQ2Mzc1MjMtN2U1YS00YmU5LTg0ZTItM2Q1NGQ1ZTBlMjhhIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0Iiwibm9kZSI6eyJuYW1lIjoibmx1dm0iLCJ1aWQiOiI1ZjcwYjM2Ni1hZTUwLTQ3NDktYTlmNy1lMGQwMGI3NGE0ODgifSwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6IjU2MjI5NjVhLTExNWQtNDU2OC1iYzBmLTMyZjczMTY3MmY1NCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImJlYzBkNWE1LTUyOGItNDU2ZS1iZDFkLWY4YjcyZmVmMWFkMCJ9LCJ3YXJuYWZ0ZXIiOjE3Mjc0NDY5MjF9LCJuYmYiOjE3Mjc0NDMzMTQsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.o_d2Nt9DFlObX559T_vYKeaGF6NmgLi3yPq6HgdRvZQfVfe_Kz3Ovz_21lc0GLOupP0vsbouIOPUl0DY3IJRLLmfQS-itiO3lVlHQwnGt3XU6aRhSKC26LELtrhKj1B3OveQEL5ODd2IyM6uGp0qErUB990jsYEVsJl2dp_f5wglOcBDg1cTXZDAVinxuQLD4Nb3LGrkyU5tddcafXGp3kT13VLsH748dAnyABtONyNS3tDE9gApfPyQyBqT9r-yhwIGblw9J0pjRw_2yfx8ygsGhhJZKIoiREw1t1GvUbzGNYQi_Ft0z8fuODTo5VleuxpS7-h9SAfUIvDgfgEM2Q",
-# }
-# headers2 = {
-#     'Content-Type': 'application/merge-patch+json',
-#     "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImJPWkdJdUtBLThOcWpEM194bEFJeDRQY1ZfZHBCdzNuTEIybkJMTkRIREUifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiLCJrM3MiXSwiZXhwIjoxNzU4OTc5MzE0LCJpYXQiOjE3Mjc0NDMzMTQsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwianRpIjoiZGQ2Mzc1MjMtN2U1YS00YmU5LTg0ZTItM2Q1NGQ1ZTBlMjhhIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0Iiwibm9kZSI6eyJuYW1lIjoibmx1dm0iLCJ1aWQiOiI1ZjcwYjM2Ni1hZTUwLTQ3NDktYTlmNy1lMGQwMGI3NGE0ODgifSwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6IjU2MjI5NjVhLTExNWQtNDU2OC1iYzBmLTMyZjczMTY3MmY1NCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImJlYzBkNWE1LTUyOGItNDU2ZS1iZDFkLWY4YjcyZmVmMWFkMCJ9LCJ3YXJuYWZ0ZXIiOjE3Mjc0NDY5MjF9LCJuYmYiOjE3Mjc0NDMzMTQsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.o_d2Nt9DFlObX559T_vYKeaGF6NmgLi3yPq6HgdRvZQfVfe_Kz3Ovz_21lc0GLOupP0vsbouIOPUl0DY3IJRLLmfQS-itiO3lVlHQwnGt3XU6aRhSKC26LELtrhKj1B3OveQEL5ODd2IyM6uGp0qErUB990jsYEVsJl2dp_f5wglOcBDg1cTXZDAVinxuQLD4Nb3LGrkyU5tddcafXGp3kT13VLsH748dAnyABtONyNS3tDE9gApfPyQyBqT9r-yhwIGblw9J0pjRw_2yfx8ygsGhhJZKIoiREw1t1GvUbzGNYQi_Ft0z8fuODTo5VleuxpS7-h9SAfUIvDgfgEM2Q",
-# }
-# # Watch for changes in Deployments
-# response = requests.get(
-#     # f"{api_server}/apis/apps/v1/namespaces/{namespace}/deployments",
-#     f"{api_server}/apis/sre.exalab.co/v1/namespaces/default/timebaseautoscaler",
-#     headers=headers,
-#     verify=False,  # Set verify=True if you have a valid SSL certificate
-#     stream=True  # Enable streaming for watch
-# )
+#unavailableReplicas
+#availableReplicas
+#readyReplicas
+#updatedReplicas
+#replicas
+# Define the API server URL and token for authentication
+api_server , token = centralize_config.kube_config()
+def eye_main():
+    namespace = "default"
+    headers = {
+        "Authorization": f"Bearer {token}",
+    }
+    headers2 = {
+        'Content-Type': 'application/merge-patch+json',
+        "Authorization": f"Bearer {token}",
+    }
+    try:
+        # Watch for changes in Deployments
+        tbas_response = requests.get(
+            #f"{api_server}/apis/apps/v1/namespaces/default/deployments",
+            f"{api_server}/apis/sre.exalab.co/v1/timebaseautoscaler",
+            headers=headers,
+            verify=False,  # Set verify=True if you have a valid SSL certificate
+            # stream=True  # Enable streaming for watch
+        )
+    except:
+        return "**Error!!** There is a problem to connecting to kubernetes api-server. Please check your token"
 
-# all_items = response.json().get("items")
-# for index in range( 0, (len(all_items)) ):
-#     item = all_items[index].get("spec")
-#     deployment_name = item.get("deploymentName")
-#     scale_down_replica = item.get("scaleDownReplica")
-#     scale_down_time = item.get("scaleDownTime")
-#     scale_up_replica = item.get("scaleUpReplica")
-#     scale_up_time = item.get("scaleUpTime")
-#     if item.get("targetNodes"):
-#         target_nodes = item.get("targetNodes")
-#     else:
-#         target_nodes = "all_available_nodes"
-#     if item.get("waveOfScale"):
-#             wave_of_scale = item.get("waveOfScale")
-#     else:
-#         wave_of_scale = 10
+    # print(response.json())
+    result_list = []
+    all_items = tbas_response.json().get("items")
+    for item in all_items :
+        tbas_name = item.get("metadata").get("name")
+        tbas_namespace = item.get("metadata").get("namespace")
+        spec_item = item.get("spec")
+        deployment_name = spec_item.get("deploymentName")
+        scale_down_replica = spec_item.get("scaleDownReplica")
+        scale_down_time = spec_item.get("scaleDownTime")
+        scale_up_replica = spec_item.get("scaleUpReplica")
+        scale_up_time = spec_item.get("scaleUpTime")
+        if spec_item.get("targetNodes"):
+            target_nodes = spec_item.get("targetNodes")
+        else:
+            target_nodes = "all_available_nodes"
+        if spec_item.get("waveOfScale"):
+                wave_of_scale = spec_item.get("waveOfScale")
+        else:
+            wave_of_scale = 10
+        if item.get("status") :
+            print("in the if ")
+            status_set_replica = item.get("status").get("set_replicas")
+            status_type = item.get("status").get("type")
+            status_status = item.get("status").get("status")
+            status_last_transition_time= item.get("status").get("last_transition_time")
+            status_message= item.get("status").get("message")
+        else:
+            print("in the else")
+            print(item)
+            print(item.get("status"))
+            print("====================")
+            print(all_items)
+            status_set_replica = None
+            status_type = None
+            status_status = None
+            status_last_transition_time = None
+            status_message = None
+        try:
+            dep_response = requests.get(
+                f"{api_server}/apis/apps/v1/namespaces/{tbas_namespace}/deployments/{deployment_name}",
+                #f"{api_server}/apis/sre.exalab.co/v1/timebaseautoscaler",
+                headers=headers,
+                verify=False,  # Set verify=True if you have a valid SSL certificate
+                # stream=True  # Enable streaming for watch
+            )
+        #     dep_replicas = dep_response.json().get(items)[0].get("status").get("replicas")
+            dep_replicas = dep_response.json().get("status").get("replicas")
+            dep_updated_replicas = dep_response.json().get("status").get("updatedReplicas")
+            dep_ready_replicas = dep_response.json().get("status").get("readyReplicas")
+            dep_available_replicas = dep_response.json().get("status").get("availableReplicas")
+            dep_unavailable_replicas = dep_response.json().get("status").get("unavailableReplicas")
+            result_dict = {"tbas_name": tbas_name, "tbas_namespace": tbas_namespace,"deployment_name": deployment_name, "scale_down_replica": scale_down_replica, "scale_down_time": scale_down_time, "scale_up_replica": scale_up_replica, "scale_up_time": scale_up_time, "target_nodes": target_nodes, "wave_of_scale": wave_of_scale, "status": {"current_replicas": dep_replicas, "ready_replicas": dep_ready_replicas, "available_replicas": dep_available_replicas, "unavailable_replicas": dep_unavailable_replicas, "set_replica": status_set_replica, "type": status_type, "status": status_status, "last_transition_time": status_last_transition_time, "message": status_message}}
+            result_list.append(result_dict)
+        except:
+            result_list.append(f"error_deployment_wrong---{tbas_name}---{deployment_name}---{tbas_namespace}")
 
-#     status_payload = {
-#         "status": {
-#             "currentReplicas": 10,
-#             "scaleDownReplicas": 5,
-#             "scaleUpReplicas": 10,
-#             "conditions": [
-#                 {
-#                     "type": "running",
-#                     "status": "ok",
-#                     "lastTransitionTime": "2020-11-12T00:00:00Z",
-#                     "message": "Scaling operation is in progress."
-#                 }
-#             ]
-#         }
-#     }
-#     test = response = requests.patch(
-#         # f"{api_server}/apis/apps/v1/namespaces/{namespace}/deployments",
-#         f"{api_server}/apis/sre.exalab.co/v1/namespaces/default/timebaseautoscaler/first-test/status",
-#         headers=headers2,
-#         verify=False,
-#         data=json.dumps(status_payload)  # Set verify=True if you have a valid SSL certificate
-#     )
-#     print(deployment_name, scale_down_replica , scale_up_replica, scale_down_time , scale_up_time, target_nodes, wave_of_scale)
-#     print(all_items[index].get("status"))
-#     print(datetime.datetime.now().strftime("%D-%H:%M:%S"))
-#     print("test", test)
-#     # print(item)
 
+    #     status_payload = {
+    #         "status": {
+    #             "currentReplicas": 10,
+    #             "scaleDownReplicas": 5,
+    #             "scaleUpReplicas": 10,
+    #             "conditions": [
+    #                 {
+    #                     "type": "running",
+    #                     "status": "ok",
+    #                     "lastTransitionTime": "2020-11-12T00:00:00Z",
+    #                     "message": "Scaling operation is in progress."
+    #                 }
+    #             ]
+    #         }
+    #     }
+    #     test = response = requests.patch(
+    #         # f"{api_server}/apis/apps/v1/namespaces/{namespace}/deployments",
+    #         f"{api_server}/apis/sre.exalab.co/v1/namespaces/default/timebaseautoscaler/first-test/status",
+    #         headers=headers2,
+    #         verify=False,
+    #         data=json.dumps(status_payload)  # Set verify=True if you have a valid SSL certificate
+    #     )
+        # print(deployment_name, scale_down_replica , scale_up_replica, scale_down_time , scale_up_time, target_nodes, wave_of_scale)
+        # print(all_items[index].get("status"))
+        # print(datetime.datetime.now().strftime("%D-%H:%M:%S"))
+        # print("test", test)
+
+    return result_list
 
 
 def sample_eye():
@@ -79,5 +130,3 @@ def sample_eye():
                 item = json.loads(item)
                 final_list.append(item)
     return final_list
-
-

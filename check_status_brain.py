@@ -16,19 +16,23 @@ def check_status(tbas_dict):
         try:
             status =  tbas_dict.get("status").get("status")
             type = tbas_dict.get("status").get("type")
-            current_replica =  tbas_dict.get("status").get("current_replica")
+            current_replica =  tbas_dict.get("status").get("current_replicas")
             ready_replicas = tbas_dict.get("status").get("ready_replicas")
             available_replicas = tbas_dict.get("status").get("available_replicas")
             unavailable_replicas = tbas_dict.get("status").get("unavailable_replicas")
             set_replica = tbas_dict.get("status").get("set_replica")
             #2025-02-13T10:33:21.832299Z
+            print("Before utc")
             utc_time  = str(datetime.datetime.utcnow().isoformat())
             utc_time = dt_object = datetime.datetime.fromisoformat(utc_time).timestamp()
-            last_transition_time = str(tbas_dict.get("status").get("last_transition_time")).split("Z")
+            print("After utc")
+            last_transition_time = str(tbas_dict.get("status").get("last_transition_time")).split("Z")[0]
             last_transition_time = dt_object = datetime.datetime.fromisoformat(last_transition_time).timestamp()
+            print("after transition time")
 
             message = tbas_dict.get("status").get("message")
         except:
+            status = None
             return "This tbas has not status section !!!"
 
         if status == "running" :
@@ -39,11 +43,11 @@ def check_status(tbas_dict):
                         if (scale_up_replica > current_replica):
                             if ( scale_up_replica - current_replica >= wave_of_scale):
                                 # Scale up based on wave_of_scale
-                                return f"ScaleUp---{tbas_name}---{tbase_namespace}---{set_replica + wave_of_scale}"
+                                return f"ScaleUp---{tbas_name}---{tbase_namespace}---{set_replica + wave_of_scale}---{deployment_name}"
                                 pass
                             else:
                                 # Scale up based on (scalue_up_replica - current_replica)
-                                return f"ScaleUp---{tbas_name}---{tbase_namespace}---{set_replica + (scale_up_replica - current_replica)}"
+                                return f"ScaleUp---{tbas_name}---{tbase_namespace}---{set_replica + (scale_up_replica - current_replica)}---{deployment_name}"
                                 pass
                         else:
                             # Setting "complete" in status section . 
@@ -61,7 +65,7 @@ def check_status(tbas_dict):
                                 return f"pending_state---{tbas_name}"
                             else:
                                 # Increasing Deployment Replica
-                                return f"warning---{tbas_name}---{tbase_namespace}---different_replicas---deployment_replica_only---{set_replica}"
+                                return f"warning---{tbas_name}---{tbase_namespace}---different_replicas---deployment_replica_only---{set_replica}---{deployment_name}"
                 else:
                     if ( utc_time - last_transition_time ) <= 300  :
                         # sleep
@@ -77,11 +81,11 @@ def check_status(tbas_dict):
                         if (current_replica > scale_down_replica ):
                             if ( current_replica - scale_down_replica >= wave_of_scale):
                                 # Scale down based on wave_of_scale
-                                return f"ScaleDown---{tbas_name}---{tbase_namespace}---{set_replica - wave_of_scale}"
+                                return f"ScaleDown---{tbas_name}---{tbase_namespace}---{set_replica - wave_of_scale}---{deployment_name}"
                                 pass
                             else:
                                 # Scale down based on (current_replica - scale_down_replica)
-                                return f"ScaleDown---{tbas_name}---{tbase_namespace}---{set_replica - (current_replica - scale_down_replica)}"
+                                return f"ScaleDown---{tbas_name}---{tbase_namespace}---{set_replica - (current_replica - scale_down_replica)}---{deployment_name}"
                                 pass
                         else:
                             # Setting "complete" in status section . 
@@ -96,7 +100,7 @@ def check_status(tbas_dict):
                                 return f"pending_state---{tbas_name}"
                             else:
                                 # Decreasing Deployment Replica
-                                return f"warning---{tbas_name}---{tbase_namespace}---different_replicas---deployment_replica_only---{set_replica}"
+                                return f"warning---{tbas_name}---{tbase_namespace}---different_replicas---deployment_replica_only---{set_replica}---{deployment_name}"
                         elif set_replica > current_replica :
                             return f"warning---{tbas_name}---{tbase_namespace}---different_replicas---tbase_replica_only---{current_replica}"
 
@@ -120,8 +124,3 @@ def check_status(tbas_dict):
             pass
 
     # return f"{tbas_name}  {deployment_name}  {scale_down_replica}  {scale_down_time}  {scale_up_replica}  {scale_up_time}  {status}  {type}  {current_replica}  {set_replica}  {last_transition_time}  {message} {target_nodes} {wave_of_scale}"
-
-
-test = {"tbas_name": "test", "deployment_name": "testdeployment", "scale_down_replica": 5, "scale_down_time": "23:10", "scale_up_replica": 100, "scale_up_time": "17:44", "target_nodes": "", "wave_of_scale": 35, "status": {"current_replica": 5, "set_replica": 5, "type": "ScaleDown", "status": "running", "last_transition_time": "2020-11-12T00:00:00Z", "message": "gfhf"}}
-
-print(check_status(test))

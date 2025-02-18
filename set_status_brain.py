@@ -85,10 +85,12 @@ def set_status(tbase_dict):
         try:
             status =  tbase_dict.get("status").get("status")
             status_type = tbase_dict.get("status").get("type")
-            has_status = False
+            current_replica = tbase_dict.get("status").get("current_replicas")
+
+            has_status = True
         except: 
             status = "Doesn't set yet ."
-            has_status = True
+            has_status = False
             pass
         # i = findout_status(scale_up_time, scale_down_time)
         # if status == "running" :
@@ -111,21 +113,50 @@ def set_status(tbase_dict):
                     pass # setting status=running and type=ScaleUp
                 elif i == "ScaleDown" and status_type == "ScaleUp":
                     print("scale_down")
-                    return f"{tbas_name}---{tbase_namespace}---ScaleDown"       
+                    return f"{tbas_name}---{tbase_namespace}---ScaleDown" 
+        elif status == "error" : 
+            # ignore this tbase
+            return None      
+        
+        # elif status == "debug":
+        #     if (scale_down_time == -1 or scale_down_replica == -1 or scale_up_time == -1) and scale_up_replica != -1 :
+        #         print("$$$$$$$$$$$$$$")
+        #         pass # setting status=running and type=ScaleUp
+        #     elif scale_down_time != -1 and scale_up_time != -1 and scale_down_replica != -1 and scale_up_replica != -1 : 
+        #         print("---------------")
+        #         i = findout_status(scale_up_time, scale_down_time) 
+        #         if i == "ScaleUp":
+        #             print("scale_up")
+        #             return f"{tbas_name}---{tbase_namespace}---ScaleUp"
+        #             pass # setting status=running and type=ScaleUp
+        #         else:
+        #             print("scale_down")
+        #             return f"{tbas_name}---{tbase_namespace}---ScaleDown"
+        #             pass # setting status=running and type=ScaleDown
                 
         else:
+            # only scale_up set 
             if (scale_down_time == -1 or scale_down_replica == -1 or scale_up_time == -1) and scale_up_replica != -1 :
                 print("$$$$$$$$$$$$$$")
                 pass # setting status=running and type=ScaleUp
             elif scale_down_time != -1 and scale_up_time != -1 and scale_down_replica != -1 and scale_up_replica != -1 : 
                 print("---------------")
                 i = findout_status(scale_up_time, scale_down_time) 
-                if i == "ScaleUp":
-                    print("scale_up")
-                    return f"{tbas_name}---{tbase_namespace}---ScaleUp"
-                    pass # setting status=running and type=ScaleUp
+                if i == "ScaleUp" :
+                    if status == None:
+                        print("scale_up")
+                        return f"{tbas_name}---{tbase_namespace}---ScaleUp---{current_replica}"
+                        pass # setting status=running and type=ScaleUp
+                    else:
+                        print("scale_up")
+                        return f"{tbas_name}---{tbase_namespace}---ScaleUp"
                 else:
-                    print("scale_down")
-                    return f"{tbas_name}---{tbase_namespace}---ScaleDown"
-                    pass # setting status=running and type=ScaleDown
+                    if status == None :
+                        print("scale_down")
+                        return f"{tbas_name}---{tbase_namespace}---ScaleDown---{current_replica}"
+                        pass # setting status=running and type=ScaleDown
+                    else:
+                        print("scale_down")
+                        return f"{tbas_name}---{tbase_namespace}---ScaleDown"
+                        pass # setting status=running and type=ScaleDown 
             # print(f"{tbas_name} {deployment_name} {scale_down_replica} {scale_down_time} {scale_up_replica} {scale_up_time} {status}")
