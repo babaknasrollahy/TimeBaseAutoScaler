@@ -21,7 +21,7 @@ while True :
             if error[0] == "error_deployment_wrong":
               error_message = f"""
 ############### ERROR ###############
-**Error** There is problem in tbase: +
+**Error** There is problem in tbase: 
 tbase-name: {error[1]}
 tbase_namespace: {error[3]}
 deployment: {error[2]}
@@ -54,7 +54,8 @@ deployment: {error[2]}
     ## Third step - check running tbases and do something :
     # call `check_status` function . it will be return several orders :
     for tbase in all_tbases:
-
+        if type(tbase) == str:
+            continue
         order = check_status(tbase)
         if order == None:
             print("There was not running tbase")

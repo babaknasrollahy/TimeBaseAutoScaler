@@ -120,6 +120,8 @@ def set_replica(tbase_name,tbase_namespace , count_of_replica ):
     status_payload = {
         "status": {
             'set_replicas': count_of_replica,
+            'last_transition_time': datetime.datetime.utcnow().isoformat() + "Z",
+
         }
     }
     response = requests.patch(

@@ -9,9 +9,10 @@ def check_status(tbas_dict):
         scale_down_time = tbas_dict.get("scale_down_time")
         scale_up_replica = tbas_dict.get("scale_up_replica")
         scale_up_time = tbas_dict.get("scale_up_time")
-        if (scale_up_replica <= scale_down_replica) and (scale_up_replica - scale_down_replica < wave_of_scale):
-            return "error. There is a bug in replica count or wave of scale that you set"
         wave_of_scale = tbas_dict.get("wave_of_scale")
+        if scale_up_replica != -1 and scale_down_replica != -1 :
+            if (scale_up_replica <= scale_down_replica) and (scale_up_replica - scale_down_replica < wave_of_scale):
+                return "error. There is a bug in replica count or wave of scale that you set"
         target_nodes = tbas_dict.get("target_nodes")
         try:
             status =  tbas_dict.get("status").get("status")
@@ -36,7 +37,10 @@ def check_status(tbas_dict):
             return "This tbas has not status section !!!"
 
         if status == "running" :
-            check_type = findout_status(scale_up_time, scale_down_time)
+            if (scale_down_time == "-1" or scale_up_time == "-1"):
+                check_type = type
+            else:
+                check_type = findout_status(scale_up_time, scale_down_time)
             if ( check_type == "ScaleUp" and type == "ScaleUp" ) :
                 if (ready_replicas == available_replicas == current_replica) and unavailable_replicas == None :
                     if (current_replica == set_replica) : 

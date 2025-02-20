@@ -42,29 +42,20 @@ spec:
                     type: string
                 waveOfScale:
                   type: integer
-            status:  # Define the status section here
+            status:
               type: object
               properties:
-                conditions:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      type:
-                        type: string
-                      status:
-                        type: string
-                      lastTransitionTime:
-                        type: string
-                        format: date-time
-                      message:
-                        type: string
-                currentReplicas:
+                set_replicas:
                   type: integer
-                scaleDownReplicas:
-                  type: integer
-                scaleUpReplicas:
-                  type: integer
+                type:
+                  type: string
+                status:
+                  type: string
+                last_transition_time:
+                  type: string
+                  format: date-time
+                message:
+                  type: string
       subresources:
         status: {}
   # ei-ther Namespaced or Cluster
