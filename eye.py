@@ -52,18 +52,13 @@ def eye_main():
         else:
             wave_of_scale = 10
         if item.get("status") :
-            print("in the if ")
             status_set_replica = item.get("status").get("set_replicas")
             status_type = item.get("status").get("type")
             status_status = item.get("status").get("status")
             status_last_transition_time= item.get("status").get("last_transition_time")
             status_message= item.get("status").get("message")
         else:
-            print("in the else")
-            print(item)
-            print(item.get("status"))
-            print("====================")
-            print(all_items)
+
             status_set_replica = None
             status_type = None
             status_status = None
@@ -119,14 +114,14 @@ def eye_main():
     return result_list
 
 
-def sample_eye():
-    final_list = []
-    with open("./test-opjects.txt" , "r") as file:
-        val = file.readlines()
-        for item in val :
-            if item == "\n":
-                print("#######################################33")
-            else: 
-                item = json.loads(item)
-                final_list.append(item)
-    return final_list
+# def sample_eye():
+#     final_list = []
+#     with open("./test-opjects.txt" , "r") as file:
+#         val = file.readlines()
+#         for item in val :
+#             if item == "\n":
+#                 pass
+#             else: 
+#                 item = json.loads(item)
+#                 final_list.append(item)
+#     return final_list

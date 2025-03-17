@@ -105,8 +105,6 @@ def set_status_and_type(status_set_replicas, status_type, status_status, status_
         data=json.dumps(status_payload)  # Set verify=True if you have a valid SSL certificate
     )
 
-    print(response.json())
-
 
 def set_replica(tbase_name,tbase_namespace , count_of_replica ):
     namespace = "default"
@@ -131,8 +129,6 @@ def set_replica(tbase_name,tbase_namespace , count_of_replica ):
         verify=False,
         data=json.dumps(status_payload)  # Set verify=True if you have a valid SSL certificate
     )
-
-    print(response.json())
 
 
 
@@ -159,8 +155,6 @@ def set_status(tbase_name, tbase_namespace ,status_status):
         verify=False,
         data=json.dumps(status_payload)  # Set verify=True if you have a valid SSL certificate
     )
-
-    print(response.json())
 
 
 def set_deployment_replica(deployment_name,deployment_namespace,count_of_replica):
@@ -189,6 +183,5 @@ def set_deployment_replica(deployment_name,deployment_namespace,count_of_replica
             data=json.dumps(replica_payload),
         )
 
-        print(response.json())
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")

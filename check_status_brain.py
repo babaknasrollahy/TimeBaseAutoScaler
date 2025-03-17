@@ -23,14 +23,10 @@ def check_status(tbas_dict):
             unavailable_replicas = tbas_dict.get("status").get("unavailable_replicas")
             set_replica = tbas_dict.get("status").get("set_replica")
             #2025-02-13T10:33:21.832299Z
-            print("Before utc")
             utc_time  = str(datetime.datetime.utcnow().isoformat())
             utc_time = dt_object = datetime.datetime.fromisoformat(utc_time).timestamp()
-            print("After utc")
             last_transition_time = str(tbas_dict.get("status").get("last_transition_time")).split("Z")[0]
             last_transition_time = dt_object = datetime.datetime.fromisoformat(last_transition_time).timestamp()
-            print("after transition time")
-
             message = tbas_dict.get("status").get("message")
         except:
             status = None
