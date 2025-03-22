@@ -1,4 +1,3 @@
-import json
 from datetime import datetime, timedelta
 
 def findout_status(up_time, down_time):

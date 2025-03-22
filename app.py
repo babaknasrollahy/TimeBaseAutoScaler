@@ -115,4 +115,4 @@ deployment: {error[2]}
     elif duration_time > proper_sleep_time :
         pass
     elif duration_time < proper_sleep_time :
-        time.sleep( duration_time - proper_sleep_time )
+        time.sleep(proper_sleep_time - duration_time)

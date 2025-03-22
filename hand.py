@@ -62,11 +62,7 @@ import datetime
 import centralize_config
 
 api_server , token = centralize_config.kube_config()
-#unavailableReplicas
-#availableReplicas
-#readyReplicas
-#updatedReplicas
-#replicas
+
 # Define the API server URL and token for authentication
 def set_status_and_type(status_set_replicas, status_type, status_status, status_message, tbase_name, tbase_namespace):
     namespace = "default"

@@ -1,13 +1,6 @@
 import requests
-import json
-import datetime
 import centralize_config
 
-#unavailableReplicas
-#availableReplicas
-#readyReplicas
-#updatedReplicas
-#replicas
 # Define the API server URL and token for authentication
 api_server , token = centralize_config.kube_config()
 def eye_main():
@@ -84,44 +77,6 @@ def eye_main():
             result_list.append(f"error_deployment_wrong---{tbas_name}---{deployment_name}---{tbas_namespace}")
 
 
-    #     status_payload = {
-    #         "status": {
-    #             "currentReplicas": 10,
-    #             "scaleDownReplicas": 5,
-    #             "scaleUpReplicas": 10,
-    #             "conditions": [
-    #                 {
-    #                     "type": "running",
-    #                     "status": "ok",
-    #                     "lastTransitionTime": "2020-11-12T00:00:00Z",
-    #                     "message": "Scaling operation is in progress."
-    #                 }
-    #             ]
-    #         }
-    #     }
-    #     test = response = requests.patch(
-    #         # f"{api_server}/apis/apps/v1/namespaces/{namespace}/deployments",
-    #         f"{api_server}/apis/sre.exalab.co/v1/namespaces/default/timebaseautoscaler/first-test/status",
-    #         headers=headers2,
-    #         verify=False,
-    #         data=json.dumps(status_payload)  # Set verify=True if you have a valid SSL certificate
-    #     )
-        # print(deployment_name, scale_down_replica , scale_up_replica, scale_down_time , scale_up_time, target_nodes, wave_of_scale)
-        # print(all_items[index].get("status"))
-        # print(datetime.datetime.now().strftime("%D-%H:%M:%S"))
-        # print("test", test)
-
     return result_list
 
 
-# def sample_eye():
-#     final_list = []
-#     with open("./test-opjects.txt" , "r") as file:
-#         val = file.readlines()
-#         for item in val :
-#             if item == "\n":
-#                 pass
-#             else: 
-#                 item = json.loads(item)
-#                 final_list.append(item)
-#     return final_list

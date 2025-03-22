@@ -1,4 +1,3 @@
-import json
 from set_status_brain import findout_status
 import datetime
 def check_status(tbas_dict):
