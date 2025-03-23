@@ -8,9 +8,4 @@ spec:
   scaleDownTime: "23:30:00"
   scaleUpReplica: 15
   scaleDownReplica: 5
-  targetNodes:
-    type: array
-    items:
-      type: string
-  waveOfScale:
-    type: string
+  waveOfScale: 2

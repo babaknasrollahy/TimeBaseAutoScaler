@@ -1,0 +1,11 @@
+apiVersion: v2
+name: tbase-operator
+description: A Helm chart for my application
+version: 0.1.0
+dependencies:
+  - name: rbac
+    version: "1.0.6"  # Replace with the correct version
+    repository: "https://stakater.github.io/stakater-charts"  # Replace with the correct repository URL
+  - name: extra-manifests
+    version: "1.0.5"
+    repository: "https://kfirfer.github.io/charts/"

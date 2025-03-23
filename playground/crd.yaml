@@ -36,10 +36,6 @@ spec:
                   type: integer
                 scaleDownReplica:
                   type: integer
-                targetNodes:
-                  type: array
-                  items:
-                    type: string
                 waveOfScale:
                   type: integer
             status:
