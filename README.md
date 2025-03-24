@@ -1,6 +1,6 @@
 # Tbase (TimeBaseAutoScaler)
 
-Tbase is a kubernetes operator for scaling pods base on time.
+Tbase is a kubernetes operator for scaling pods based on time.
 
 
 ## Installation

@@ -1,9 +1,6 @@
 dependencies:
-- name: rbac
-  repository: https://stakater.github.io/stakater-charts
-  version: 1.0.6
 - name: extra-manifests
   repository: https://kfirfer.github.io/charts/
   version: 1.0.5
-digest: sha256:ef865bbaede93f5c8cf68d9457a38cbafa4226a5529843111090dd6f7b18dac3
-generated: "2025-03-23T15:41:54.293999836+03:30"
+digest: sha256:dcb18f229608f71c9a073df7f116c6468230b343248b14aea76089789587da3c
+generated: "2025-03-24T13:50:07.174569421+03:30"

@@ -1,33 +1,33 @@
-rbac:
-  rbac:
-    appName: rbac
-    clusterRole:
-      enabled: true
-      name: tbase-role
-      labels: {}
-      rules:
-      - apiGroups: ["sre.exalab.co"]
-        resources: ["timebaseautoscaler", "timebaseautoscaler/status"]
-        verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-      - apiGroups: ["apps"]
-        resources: ["deployments"]
-        verbs: ["get", "list", "watch", "update", "patch"]
+# rbac:
+#   rbac:
+#     appName: rbac
+#     clusterRole:
+#       enabled: true
+#       name: tbase-role
+#       labels: {}
+#       rules:
+#       - apiGroups: ["sre.exalab.co"]
+#         resources: ["timebaseautoscaler", "timebaseautoscaler/status"]
+#         verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+#       - apiGroups: ["apps"]
+#         resources: ["deployments"]
+#         verbs: ["get", "list", "watch", "update", "patch"]
 
-    clusterRoleBinding:
-      enabled: true
-      name: tbase-rolebinding
-      labels: {}
-      clusterRoleName: tbase-role
-      serviceAccountName: tbase-service-account
+#     clusterRoleBinding:
+#       enabled: true
+#       name: tbase-rolebinding
+#       labels: {}
+#       clusterRoleName: tbase-role
+#       serviceAccountName: tbase-service-account
 
 
-  serviceAccount:
-    # Specifies whether a ServiceAccount should be created
-    create: true
-    labels: {}
-    # The name of the ServiceAccount to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: tbase-service-account
+  # serviceAccount:
+  #   # Specifies whether a ServiceAccount should be created
+  #   create: true
+  #   labels: {}
+  #   # The name of the ServiceAccount to use.
+  #   # If not set and create is true, a name is generated using the fullname template
+  #   name: tbase-service-account
 
 
 # tbase:
@@ -61,6 +61,7 @@ extra-manifests:
       kind: Deployment
       metadata:
         name: tbase-operator
+        namespace: tbase-operator
       spec:
         replicas: 1
         selector:
@@ -71,7 +72,7 @@ extra-manifests:
             labels:
               app: tbase-operator
           spec:
-            serviceAccountName: "testaccount"
+            serviceAccountName: "tbase-service-account"
             containers:
             - name: tbase-operator
               image: babaknasrolahy/tbase-operator:1.0.1
@@ -152,4 +153,35 @@ extra-manifests:
           shortNames:
           - tbas
 
+    - apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: tbase-service-account
+        namespace: tbase-operator
+      automountServiceAccountToken: true
 
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      metadata:
+        name: tbase-role
+      rules:
+      - apiGroups: ["sre.exalab.co"]
+        resources: ["timebaseautoscaler", "timebaseautoscaler/status"]
+        verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+      - apiGroups: ["apps"]
+        resources: ["deployments"]
+        verbs: ["get", "list", "watch", "update", "patch"]
+
+    - apiVersion: rbac.authorization.k8s.io/v1
+      # This cluster role binding allows anyone in the "manager" group to read secrets in any namespace.
+      kind: ClusterRoleBinding
+      metadata:
+        name: test
+      subjects:
+      - kind: ServiceAccount
+        name: tbase-service-account
+        namespace: tbase-operator
+      roleRef:
+        kind: ClusterRole
+        name: tbase-role
+        apiGroup: rbac.authorization.k8s.io
