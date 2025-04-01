@@ -1,7 +1,7 @@
 # Tbase (TimeBaseAutoScaler)
 
 Tbase is a kubernetes operator for scaling pods based on time.
-
+![DALLE2025-02-1900 10 52-AmodernKubernetes-stylelogoforTbaseTimeBaseAutoScaleranoperatorresponsibleforscalingpodsupanddownatspecifictimes Thelogofeat-ezgif com-webp-to-png-converter](https://github.com/user-attachments/assets/35d05fee-f653-4dd3-be14-9303859bd987)
 
 ## Installation
 The easiest way to install **Tbase operator** is its **hlem chart** . 
